@@ -1,0 +1,63 @@
+﻿@page
+@model MealPlannerRazor.Pages.Recipes.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>RecipeModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="RecipeModel.Name" class="control-label"></label>
+                <input asp-for="RecipeModel.Name" class="form-control" />
+                <span asp-validation-for="RecipeModel.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RecipeModel.Meat" class="control-label"></label>
+                <select asp-for="RecipeModel.Meat" class="form-control">
+                    <option value="">Select Main Meat</option>
+                    <option value="Chicken">Chicken</option>
+                    <option value="Fish">Fish</option>
+                    <option value="Ground Beef">Ground Beef</option>
+                    <option value="Pork">Pork</option>
+                    <option value="Steak">Steak</option>
+                    <option value="Shrimp">Shrimp</option>
+                    <option value="Sausage">Sausage</option>
+                </select>
+                <span asp-validation-for="RecipeModel.Meat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RecipeModel.Type" class="control-label"></label>
+                <select asp-for="RecipeModel.Type" class="form-control">
+                    <option value="">Select Type of Meal</option>
+                    <option value="Basic Meat and Sides">Basic Meat and Sides</option>
+                    <option value="Casserole">Casserole</option>
+                    <option value="Pasta">Pasta</option>
+                </select>
+                <span asp-validation-for="RecipeModel.Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RecipeModel.RecipeDirections" class="control-label"></label>
+                <textarea asp-for="RecipeModel.RecipeDirections" class="form-control">Recipe Directions...</textarea>
+                <span asp-validation-for="RecipeModel.RecipeDirections" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
