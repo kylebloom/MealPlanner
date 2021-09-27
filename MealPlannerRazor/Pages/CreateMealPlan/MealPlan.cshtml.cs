@@ -21,21 +21,29 @@ namespace MealPlannerRazor.Pages.CreateMealPlan
 
         [BindProperty]
         public List<RecipeModel> Mealplan { get; set; }
-     
-        public RecipeModel RandomRecipe { get; set; }
+        
+       
         public string[] DaysOfWeek = new string[] { 
             "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
       
 
         public void OnGet()
         {
+            CreateMealPlan(_context);
+        }
+
+        public void CreateMealPlan(Data.MealPlannerRazorContext _context)
+        {
+            
+            RecipeModel RandomRecipe = new RecipeModel();
+
             // check to make sure pasta is only being selected once per week. 
             bool pastaFound = false;
 
             // random integer to select a ID at random. 
             Random rand = new Random();
-            
-            Mealplan = new List<RecipeModel>();
+
+            List<RecipeModel> mealplan = new List<RecipeModel>();
 
             int i = 0;
             while (i < 7)
@@ -45,15 +53,35 @@ namespace MealPlannerRazor.Pages.CreateMealPlan
                 if (RandomRecipe.Type == "Pasta" && pastaFound == false)
                 {
                     pastaFound = true;
-                    Mealplan.Add(RandomRecipe);
+
+                    // add conditional to check how many times meal has been had. if more than the current count of meals repetitive, then do not use that recipe.
+                    mealplan.Add(RandomRecipe);
                     i++;
+
+
+                    AddMealToPastMeals(RandomRecipe);
                 }
-                else if(RandomRecipe.Type != "Pasta")
+                else if (RandomRecipe.Type != "Pasta")
                 {
-                    Mealplan.Add(RandomRecipe);
+                    // add conditional to check how many times meal has been had. if more than the current count of meals repetitive, then do not use that recipe.
+                    mealplan.Add(RandomRecipe);
                     i++;
+
+                    AddMealToPastMeals(RandomRecipe);
                 }
             }
+            this.Mealplan = mealplan;
+        }
+
+        // adds the currently selected meal to the database with a datetime stamp.
+        public void AddMealToPastMeals(RecipeModel recipe)
+        {
+            DateTime currentDate = DateTime.Now;
+            PastMeals currPastMeal = new PastMeals();
+            currPastMeal.Date = currentDate;
+            currPastMeal.RecipeId = recipe.Id;
+            _context.PastMeals.Add(currPastMeal);
+            _context.SaveChanges();
         }
     }
 }

@@ -22,9 +22,9 @@
                 <label asp-for="RecipeModel.Meat" class="control-label"></label>
                 <select asp-for="RecipeModel.Meat" class="form-control">
                     <option value="">Select Main Meat</option>
+                    <option value="Beef">Beef</option>
                     <option value="Chicken">Chicken</option>
                     <option value="Fish">Fish</option>
-                    <option value="Ground Beef">Ground Beef</option>
                     <option value="Pork">Pork</option>
                     <option value="Steak">Steak</option>
                     <option value="Shrimp">Shrimp</option>
@@ -39,6 +39,8 @@
                     <option value="Basic Meat and Sides">Basic Meat and Sides</option>
                     <option value="Casserole">Casserole</option>
                     <option value="Pasta">Pasta</option>
+                    <option value="Wrap/Sandwich">Wrap/Sandwich</option>
+                    <option value="Other">Other</option>
                 </select>
                 <span asp-validation-for="RecipeModel.Type" class="text-danger"></span>
             </div>
