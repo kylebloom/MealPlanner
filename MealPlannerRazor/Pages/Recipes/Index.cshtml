@@ -14,16 +14,29 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.RecipeModel[0].Name)
+                <form method="get">
+                    <input type="text" hidden value="name" name="sort" />
+                    <input type="submit" value="@Html.DisplayNameFor(model => model.RecipeModel[0].Name)" />
+                </form>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RecipeModel[0].Meat)
+                <form method="get">
+                    <input type="text" hidden value="meat" name="sort" />
+                    <input type="submit" value="@Html.DisplayNameFor(model => model.RecipeModel[0].Meat)" />
+                </form>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RecipeModel[0].Type)
+                <form method="get">
+                    <input type="text" hidden value="type" name="sort" />
+                    <input type="submit" value="@Html.DisplayNameFor(model => model.RecipeModel[0].Type)" />
+                </form>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RecipeModel[0].RecipeDirections)
+                <form method="get">
+                    <input type="text" hidden value="directions" name="sort" />
+                    <input type="submit" value="@Html.DisplayNameFor(model => model.RecipeModel[0].RecipeDirections)" />
+                </form>
+                
             </th>
             <th></th>
         </tr>
