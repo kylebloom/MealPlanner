@@ -14,29 +14,70 @@
     <thead>
         <tr>
             <th>
+                @if (Request.Query["sort"] == "name" || String.IsNullOrEmpty(Request.Query["sort"]))
+                {
+                    <form method="get">
+                        <input type="text" hidden value="namebackwards" name="sort" />
+                        <input type="submit" value="@Html.DisplayNameFor(model => model.RecipeModel[0].Name)" />
+                    </form>
+                }
+                else
+                {
                 <form method="get">
                     <input type="text" hidden value="name" name="sort" />
                     <input type="submit" value="@Html.DisplayNameFor(model => model.RecipeModel[0].Name)" />
                 </form>
+                }
+                
             </th>
             <th>
+                @if (Request.Query["sort"] == "meat")
+                {
+                <form method="get">
+                    <input type="text" hidden value="meat2" name="sort" />
+                    <input type="submit" value="@Html.DisplayNameFor(model => model.RecipeModel[0].Meat)" />
+                </form>
+                }
+                else
+                {
                 <form method="get">
                     <input type="text" hidden value="meat" name="sort" />
                     <input type="submit" value="@Html.DisplayNameFor(model => model.RecipeModel[0].Meat)" />
                 </form>
+                }
             </th>
             <th>
-                <form method="get">
-                    <input type="text" hidden value="type" name="sort" />
-                    <input type="submit" value="@Html.DisplayNameFor(model => model.RecipeModel[0].Type)" />
-                </form>
+                @if (Request.Query["sort"] == "type")
+                {
+                    <form method="get">
+                        <input type="text" hidden value="type2" name="sort" />
+                        <input type="submit" value="@Html.DisplayNameFor(model => model.RecipeModel[0].Type)" />
+                    </form>
+                }
+                else
+                {
+                    <form method="get">
+                        <input type="text" hidden value="type" name="sort" />
+                        <input type="submit" value="@Html.DisplayNameFor(model => model.RecipeModel[0].Type)" />
+                    </form>
+                }
             </th>
             <th>
-                <form method="get">
-                    <input type="text" hidden value="directions" name="sort" />
-                    <input type="submit" value="@Html.DisplayNameFor(model => model.RecipeModel[0].RecipeDirections)" />
-                </form>
-                
+                @if (Request.Query["sort"] == "directions")
+                {
+                    <form method="get">
+                        <input type="text" hidden value="directions2" name="sort" />
+                        <input type="submit" value="@Html.DisplayNameFor(model => model.RecipeModel[0].RecipeDirections)" />
+                    </form>
+                }
+                else
+                {
+                    <form method="get">
+                        <input type="text" hidden value="directions" name="sort" />
+                        <input type="submit" value="@Html.DisplayNameFor(model => model.RecipeModel[0].RecipeDirections)" />
+                    </form>
+                }
+
             </th>
             <th></th>
         </tr>

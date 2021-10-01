@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MealPlannerRazor.Models
 {
-    public class PastMeals
+    public class PastMealsModel
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }

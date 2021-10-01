@@ -23,20 +23,27 @@ namespace MealPlannerRazor.Pages.CreateMealPlan
 
         [BindProperty]
         public List<RecipeModel> Mealplan { get; set; }
-        public IQueryable<PastMeals> PastMealsQuery { get; set; }
-        public IList<PastMeals> PastMealsList { get; set; }
+        public IQueryable<PastMealsModel> PastMealsQuery { get; set; }
+        public IList<PastMealsModel> PastMealsList { get; set; }
+
+
+        public string[] DaysOfWeek = new string[] {
+            "Monday", "Tuesday","Wednesday", "Thursday","Friday", "Saturday","Sunday"};
         
-       
-        public string[] DaysOfWeek = new string[] { 
-            "Monday", "Wednesday", "Friday", "Saturday"};
-      
+
+
+        public void OnPost()
+        {
+            int numberOfMeals = int.Parse(Request.Form["numberOfMeals"]);
+            CreateMealPlan(_context, numberOfMeals);
+        }
 
         public void OnGet()
         {
-            CreateMealPlan(_context);
+            
         }
 
-        public void CreateMealPlan(Data.MealPlannerRazorContext _context)
+        public void CreateMealPlan(Data.MealPlannerRazorContext _context, int numberOfMeals)
         {
             
             RecipeModel RandomRecipe = new RecipeModel();
@@ -50,7 +57,7 @@ namespace MealPlannerRazor.Pages.CreateMealPlan
             List<RecipeModel> mealplan = new List<RecipeModel>();
             DateTime currentDate = DateTime.Now;
 
-            PastMealsList = _context.PastMeals
+            PastMealsList = _context.PastMealsModel
                 .AsEnumerable()
                 .Where(x => x.Date.Subtract(currentDate).TotalDays < 30)
                 .ToList();
@@ -58,7 +65,7 @@ namespace MealPlannerRazor.Pages.CreateMealPlan
 
 
             int i = 0;
-            while (i < 4)
+            while (i < numberOfMeals)
             {
                 int toSkip = rand.Next(0, _context.RecipeModel.Count());
                 RandomRecipe = _context.RecipeModel.Skip(toSkip).Take(1).First();
@@ -90,11 +97,11 @@ namespace MealPlannerRazor.Pages.CreateMealPlan
         public void AddMealToPastMeals(RecipeModel recipe)
         {
             DateTime currentDate = DateTime.Now;
-            PastMeals currPastMeal = new PastMeals();
+            PastMealsModel currPastMeal = new PastMealsModel();
             currPastMeal.Date = currentDate;
             currPastMeal.RecipeId = recipe.Id;
             PastMealsList.Add(currPastMeal);
-            _context.PastMeals.Add(currPastMeal);
+            _context.PastMealsModel.Add(currPastMeal);
             _context.SaveChanges();
         }
 

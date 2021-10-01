@@ -28,7 +28,7 @@ namespace MealPlannerRazor.Pages.Recipes
             string sortMethod;
             if (!String.IsNullOrEmpty(Request.Query["sort"]))
             {
-                // Query string value is there so now use it
+                // sorts the list of recipes based off the selected button on the Recipes page
                 sortMethod = Request.Query["sort"];
 
                 switch (sortMethod)
@@ -38,9 +38,19 @@ namespace MealPlannerRazor.Pages.Recipes
                         .OrderBy(r => r.Name)
                         .ToListAsync();
                         break;
+                    case "namebackwards":
+                        RecipeModel = await _context.RecipeModel
+                        .OrderByDescending(r => r.Name)
+                        .ToListAsync();
+                        break;
                     case "meat":
                         RecipeModel = await _context.RecipeModel
                         .OrderBy(r => r.Meat)
+                        .ToListAsync();
+                        break;
+                    case "meat2":
+                        RecipeModel = await _context.RecipeModel
+                        .OrderByDescending(r => r.Meat)
                         .ToListAsync();
                         break;
                     case "type":
@@ -48,15 +58,26 @@ namespace MealPlannerRazor.Pages.Recipes
                         .OrderBy(r => r.Type)
                         .ToListAsync();
                         break;
+                    case "type2":
+                        RecipeModel = await _context.RecipeModel
+                        .OrderByDescending(r => r.Type)
+                        .ToListAsync();
+                        break;
                     case "directions":
                         RecipeModel = await _context.RecipeModel
                         .OrderBy(r => r.RecipeDirections)
+                        .ToListAsync();
+                        break;
+                    case "directions2":
+                        RecipeModel = await _context.RecipeModel
+                        .OrderByDescending(r => r.RecipeDirections)
                         .ToListAsync();
                         break;
                 }
             }
             else
             {
+
                 RecipeModel = await _context.RecipeModel
                 .OrderBy(r => r.Name)
                 .ToListAsync();
