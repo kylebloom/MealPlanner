@@ -4,115 +4,144 @@
 @{
     ViewData["Title"] = "Index";
 }
+<div class="container">
+    <h1>Recipes</h1>
 
-<h1>Recipes</h1>
-
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<form>
     <p>
-        Name: <input type="text" asp-for="SearchString" />
-        <select asp-for="MeatSelection" asp-items="Model.Meats">
-            <option value="">All</option>
-        </select>
-        <input type="submit" value="Filter" />
-        Showing @Model.RecipeModel.Count Recipes
+        <a asp-page="Create" class="btn btn-primary" role="button">Create New</a>
     </p>
-</form>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @if (Request.Query["sort"] == "name" || String.IsNullOrEmpty(Request.Query["sort"]))
-                {
+    <form>
+        <p>
+            Name: <input type="text" asp-for="SearchString" />
+            <select asp-for="MeatSelection" asp-items="Model.Meats">
+                <option value="">All</option>
+            </select>
+            <input type="submit" value="Filter" />
+            Showing @Model.RecipeModel.Count Recipes
+        </p>
+    </form>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @if (Request.Query["sort"] == "name" || String.IsNullOrEmpty(Request.Query["sort"]))
+                    {
+                        <form method="get">
+                            <input type="text" hidden value="namebackwards" name="sort" />
+                            <input type="submit" class="btn btn-primary"value="@Html.DisplayNameFor(model => model.RecipeModel[0].Name)" />
+                        </form>
+                    }
+                    else
+                    {
                     <form method="get">
-                        <input type="text" hidden value="namebackwards" name="sort" />
-                        <input type="submit" value="@Html.DisplayNameFor(model => model.RecipeModel[0].Name)" />
+                        <input type="text" hidden value="name" name="sort" />
+                        <input type="submit" class="btn btn-primary"value="@Html.DisplayNameFor(model => model.RecipeModel[0].Name)" />
                     </form>
-                }
-                else
-                {
-                <form method="get">
-                    <input type="text" hidden value="name" name="sort" />
-                    <input type="submit" value="@Html.DisplayNameFor(model => model.RecipeModel[0].Name)" />
-                </form>
-                }
+                    }
                 
-            </th>
-            <th>
-                @if (Request.Query["sort"] == "meat")
-                {
-                <form method="get">
-                    <input type="text" hidden value="meat2" name="sort" />
-                    <input type="submit" value="@Html.DisplayNameFor(model => model.RecipeModel[0].Meat)" />
-                </form>
-                }
-                else
-                {
-                <form method="get">
-                    <input type="text" hidden value="meat" name="sort" />
-                    <input type="submit" value="@Html.DisplayNameFor(model => model.RecipeModel[0].Meat)" />
-                </form>
-                }
-            </th>
-            <th>
-                @if (Request.Query["sort"] == "type")
-                {
+                </th>
+                <th>
+                    @if (Request.Query["sort"] == "meat")
+                    {
                     <form method="get">
-                        <input type="text" hidden value="type2" name="sort" />
-                        <input type="submit" value="@Html.DisplayNameFor(model => model.RecipeModel[0].Type)" />
+                        <input type="text" hidden value="meat2" name="sort" />
+                        <input type="submit" class="btn btn-primary"value="@Html.DisplayNameFor(model => model.RecipeModel[0].Meat)" />
                     </form>
-                }
-                else
-                {
+                    }
+                    else
+                    {
                     <form method="get">
-                        <input type="text" hidden value="type" name="sort" />
-                        <input type="submit" value="@Html.DisplayNameFor(model => model.RecipeModel[0].Type)" />
+                        <input type="text" hidden value="meat" name="sort" />
+                        <input type="submit" class="btn btn-primary"value="@Html.DisplayNameFor(model => model.RecipeModel[0].Meat)" />
                     </form>
-                }
-            </th>
-            <th>
-                @if (Request.Query["sort"] == "directions")
-                {
-                    <form method="get">
-                        <input type="text" hidden value="directions2" name="sort" />
-                        <input type="submit" value="@Html.DisplayNameFor(model => model.RecipeModel[0].RecipeDirections)" />
-                    </form>
-                }
-                else
-                {
-                    <form method="get">
-                        <input type="text" hidden value="directions" name="sort" />
-                        <input type="submit" value="@Html.DisplayNameFor(model => model.RecipeModel[0].RecipeDirections)" />
-                    </form>
-                }
+                    }
+                </th>
+                <th>
+                    @if (Request.Query["sort"] == "type")
+                    {
+                        <form method="get">
+                            <input type="text" hidden value="type2" name="sort" />
+                            <input type="submit" class="btn btn-primary"value="@Html.DisplayNameFor(model => model.RecipeModel[0].Type)" />
+                        </form>
+                    }
+                    else
+                    {
+                        <form method="get">
+                            <input type="text" hidden value="type" name="sort" />
+                            <input type="submit" class="btn btn-primary"value="@Html.DisplayNameFor(model => model.RecipeModel[0].Type)" />
+                        </form>
+                    }
+                </th>
+                <th>
+                    @if (Request.Query["sort"] == "directions")
+                    {
+                        <form method="get">
+                            <input type="text" hidden value="directions2" name="sort" />
+                            <input type="submit" class="btn btn-primary"value="@Html.DisplayNameFor(model => model.RecipeModel[0].RecipeDirections)" />
+                        </form>
+                    }
+                    else
+                    {
+                        <form method="get">
+                            <input type="text" hidden value="directions" name="sort" />
+                            <input type="submit" class="btn btn-primary"value="@Html.DisplayNameFor(model => model.RecipeModel[0].RecipeDirections)" />
+                        </form>
+                    }
 
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.RecipeModel) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Meat)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RecipeDirections)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model.RecipeModel) {
+            <tr class="clickable-row" data-href="">
+                <td>
+                
+                        @Html.DisplayFor(modelItem => item.Name)
+                
+                </td>
+                <td>
+                
+                        @Html.DisplayFor(modelItem => item.Meat)
+                
+                </td>
+                <td>
+                
+                        @Html.DisplayFor(modelItem => item.Type)
+                
+                </td>
+                <td>
+                    @{
+
+                        if (item.RecipeDirections.Length >= 4)
+                        {
+                            if (item.RecipeDirections.Substring(0, 4) == "http")
+                            {
+                                <a class="btn btn-primary" href="@item.RecipeDirections" role="button">Recipe</a>
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(modelItem => item.RecipeDirections)
+                            }
+                        }
+                    }
+
+
+
+                </td>
+                <td>
+                    <div class="btn-toolbar" data-toggle="buttons"role="group">
+                        <a class="btn btn-warning" asp-page="./Edit" asp-route-id="@item.Id">Edit</a>
+                        <a class="btn btn-secondary" asp-page="./Details" asp-route-id="@item.Id">Details</a>
+                        <a class="btn btn-danger" asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                    </div>
+
+               
+                
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+
+</div>

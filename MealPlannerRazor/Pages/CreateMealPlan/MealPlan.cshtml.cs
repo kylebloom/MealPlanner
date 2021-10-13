@@ -28,44 +28,60 @@ namespace MealPlannerRazor.Pages.CreateMealPlan
 
 
         public List<string> daysChecked = new List<string>();
+        public Dictionary<string, DateTime> daysForMeals = new Dictionary<string, DateTime>();
 
 
 
         public void OnPost()
         {
-            
+            DateTime today = DateTime.Today;
 
             if (Request.Form["monCheck"] == "on")
             {
                 daysChecked.Add("Monday");
+
+                // calculates the next date 
+                int date = ((int)DayOfWeek.Monday - (int)today.DayOfWeek + 7) % 7;
+                daysForMeals.Add("Monday", today.AddDays(date));
             }
             if (Request.Form["tueCheck"] == "on")
             {
                 daysChecked.Add("Tuesday");
+                int date = ((int)DayOfWeek.Tuesday - (int)today.DayOfWeek + 7) % 7;
+                daysForMeals.Add("Tuesday", today.AddDays(date));
             }
             if (Request.Form["wedCheck"] == "on")
             {
                 daysChecked.Add("Wednesday");
+                int date = ((int)DayOfWeek.Wednesday - (int)today.DayOfWeek + 7) % 7;
+                daysForMeals.Add("Wednesday", today.AddDays(date));
             }
             if (Request.Form["thuCheck"] == "on")
             {
                 daysChecked.Add("Thursday");
+                int date = ((int)DayOfWeek.Thursday - (int)today.DayOfWeek + 7) % 7;
+                daysForMeals.Add("Thursday", today.AddDays(date));
             }
             if (Request.Form["friCheck"] == "on")
             {
                 daysChecked.Add("Friday");
+                int date = ((int)DayOfWeek.Friday - (int)today.DayOfWeek + 7) % 7;
+                daysForMeals.Add("Friday", today.AddDays(date));
             }
             if (Request.Form["satCheck"] == "on")
             {
                 daysChecked.Add("Saturday");
+                int date = ((int)DayOfWeek.Saturday - (int)today.DayOfWeek + 7) % 7;
+                daysForMeals.Add("Saturday", today.AddDays(date));
             }
             if (Request.Form["sunCheck"] == "on")
             {
                 daysChecked.Add("Sunday");
+                int date = ((int)DayOfWeek.Sunday - (int)today.DayOfWeek + 7) % 7;
+                daysForMeals.Add("Sunday", today.AddDays(date));
             }
 
-            int numberOfMeals = daysChecked.Count;
-            CreateMealPlan(_context, numberOfMeals);
+            CreateMealPlan(_context, daysForMeals.Count);
         }
 
         public void OnGet()
@@ -92,31 +108,32 @@ namespace MealPlannerRazor.Pages.CreateMealPlan
                 .Where(x => x.Date.Subtract(currentDate).TotalDays < 30)
                 .ToList();
 
-
-
-            int i = 0;
-            while (i < numberOfMeals)
+            foreach(var day in daysForMeals)
             {
-                int toSkip = rand.Next(0, _context.RecipeModel.Count());
-                RandomRecipe = _context.RecipeModel.Skip(toSkip).Take(1).First();
-
-                if (MealNotUsed(RandomRecipe))
+                bool mealselected = false;
+                while (!mealselected)
                 {
-                    if (RandomRecipe.Type == "Pasta" && pastaFound == false)
-                    {
-                        pastaFound = true;
+                    int toSkip = rand.Next(0, _context.RecipeModel.Count());
+                    RandomRecipe = _context.RecipeModel.Skip(toSkip).Take(1).First();
 
-                        // add conditional to check how many times meal has been had. if more than the current count of meals repetitive, then do not use that recipe.
-                        mealplan.Add(RandomRecipe);
-                        i++;
-                        AddMealToPastMeals(RandomRecipe);
-                    }
-                    else if (RandomRecipe.Type != "Pasta")
+                    if (MealNotUsed(RandomRecipe))
                     {
-                        // add conditional to check how many times meal has been had. if more than the current count of meals repetitive, then do not use that recipe.
-                        mealplan.Add(RandomRecipe);
-                        i++;
-                        AddMealToPastMeals(RandomRecipe);
+                        if (RandomRecipe.Type == "Pasta" && pastaFound == false)
+                        {
+                            pastaFound = true;
+
+                            // add conditional to check how many times meal has been had. if more than the current count of meals repetitive, then do not use that recipe.
+                            mealplan.Add(RandomRecipe);
+                            AddMealToPastMeals(RandomRecipe, day.Value);
+                            mealselected = true;
+                        }
+                        else if (RandomRecipe.Type != "Pasta")
+                        {
+                            // add conditional to check how many times meal has been had. if more than the current count of meals repetitive, then do not use that recipe.
+                            mealplan.Add(RandomRecipe);
+                            AddMealToPastMeals(RandomRecipe, day.Value);
+                            mealselected = true;
+                        }
                     }
                 }
             }
@@ -124,11 +141,11 @@ namespace MealPlannerRazor.Pages.CreateMealPlan
         }
 
         // adds the currently selected meal to the database with a datetime stamp.
-        public void AddMealToPastMeals(RecipeModel recipe)
+        public void AddMealToPastMeals(RecipeModel recipe, DateTime dateOfMeal)
         {
-            DateTime currentDate = DateTime.Now;
+            
             PastMealsModel currPastMeal = new PastMealsModel();
-            currPastMeal.Date = currentDate;
+            currPastMeal.Date = dateOfMeal;
             currPastMeal.RecipeId = recipe.Id;
             PastMealsList.Add(currPastMeal);
             _context.PastMealsModel.Add(currPastMeal);

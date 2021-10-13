@@ -25,6 +25,7 @@
     <tbody>
         @foreach (var item in Model.PastRecipesModel2)
         {
+            
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Recipe.Name)
@@ -33,8 +34,8 @@
                 @Html.DisplayFor(modelItem => item.Pastmeal.Date)
             </td>
 
-            <td> |
-                <a asp-page="./Delete" asp-route-id="@item.Pastmeal.Id">Delete</a>
+            <td> 
+                <a class="btn btn-danger"asp-page="./Delete" asp-route-id="@item.Pastmeal.Id">Delete</a>
             </td>
         </tr>
         }

@@ -18,7 +18,7 @@ namespace MealPlannerRazor.Models
         [Column(TypeName = "varchar(50)")]
         public string Type { get; set; }
 
-        [Display]
+        [Display(Name = "Recipe Directions")]
         [Column(TypeName = "varchar(1000)")]
         public string RecipeDirections { get; set; }
     }

@@ -7,6 +7,14 @@ a.navbar-brand {
   word-break: break-all;
 }
 
+tr:hover {
+    background: grey !important;
+}
+td a {
+    display:block !important;
+    border: 1px solid black !important;
+    padding:16px !important;
+}
 
 /* Provide sufficient contrast against white background */
 a {
@@ -36,8 +44,19 @@ html {
   }
 }
 
+.select-link-buttons {
+    display: none !important;
+}
+
+@media (max-width:850px) {
+    list-link-buttons {display:none !important;}
+    select-link-buttons {
+        display: inline-block !important;
+    }
+}
+
 .border-top {
-  border-top: 1px solid #e5e5e5;
+    border-top: 1px solid #e5e5e5;
 }
 .border-bottom {
   border-bottom: 1px solid #e5e5e5;

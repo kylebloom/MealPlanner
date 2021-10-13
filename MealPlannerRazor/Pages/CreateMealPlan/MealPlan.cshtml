@@ -4,7 +4,8 @@
 @{
 }
 @{
-    var MealplanDays = Model.Mealplan.Zip(Model.daysChecked, (m, d) => new { Recipe = m, Day = d});
+    var MealplanDays = Model.Mealplan.Zip(Model.daysForMeals, (m, d) => new { Recipe = m, Day = d});
+    
 }
 <h1>Meal Plan</h1>
 
@@ -21,9 +22,25 @@ else
     {
         <div class="card mt-4" style="width: 18rem;">
             <div class="card-body">
-                <h2 class="card-header-pills">@mealday.Day</h2>
+                <h2 class="card-header-pills">@mealday.Day.Key</h2>
+                <h3 class="card-header-pills">@mealday.Day.Value.ToString("MM/dd/yyyy")</h3>
                 <h5 class="card-title">@mealday.Recipe.Name</h5>
-                <p class="card-text">@mealday.Recipe.RecipeDirections</p>
+                @{
+                    
+                    if (mealday.Recipe.RecipeDirections.Length >= 4)
+                    {
+                        if (mealday.Recipe.RecipeDirections.Substring(0, 4) == "http")
+                        {
+                            <p class="card-text"><a class="btn btn-primary" href="@mealday.Recipe.RecipeDirections" role="button">Link</a></p>
+                        }
+                        else
+                        {
+                            <p class="card-text">@mealday.Recipe.RecipeDirections</p>
+                        }
+                    }
+                }
+
+
             </div>
         </div>
     }
