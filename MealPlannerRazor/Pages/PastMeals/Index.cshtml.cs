@@ -27,8 +27,10 @@ namespace MealPlannerRazor.Pages.PastMeals
             var query = from recipes in _context.RecipeModel
                                 join pastmeals in _context.PastMealsModel on recipes.Id equals pastmeals.RecipeId into oldmeals
                                 from o in oldmeals
+                                orderby o.Date descending
                                 select new PastRecipesJoinedModel { Pastmeal = o, Recipe = recipes };
-            PastRecipesModel2 = query.ToList();           
+            PastRecipesModel2 = query
+                                .ToList();           
 
             /*PastRecipesModel = await _context.PastMealsModel
                 .OrderBy(p => p.Date)

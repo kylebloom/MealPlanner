@@ -27,14 +27,44 @@ namespace MealPlannerRazor.Pages.CreateMealPlan
         public IList<PastMealsModel> PastMealsList { get; set; }
 
 
-        public string[] DaysOfWeek = new string[] {
-            "Monday", "Tuesday","Wednesday", "Thursday","Friday", "Saturday","Sunday"};
-        
+        public List<string> daysChecked = new List<string>();
+
 
 
         public void OnPost()
         {
-            int numberOfMeals = int.Parse(Request.Form["numberOfMeals"]);
+            
+
+            if (Request.Form["monCheck"] == "on")
+            {
+                daysChecked.Add("Monday");
+            }
+            if (Request.Form["tueCheck"] == "on")
+            {
+                daysChecked.Add("Tuesday");
+            }
+            if (Request.Form["wedCheck"] == "on")
+            {
+                daysChecked.Add("Wednesday");
+            }
+            if (Request.Form["thuCheck"] == "on")
+            {
+                daysChecked.Add("Thursday");
+            }
+            if (Request.Form["friCheck"] == "on")
+            {
+                daysChecked.Add("Friday");
+            }
+            if (Request.Form["satCheck"] == "on")
+            {
+                daysChecked.Add("Saturday");
+            }
+            if (Request.Form["sunCheck"] == "on")
+            {
+                daysChecked.Add("Sunday");
+            }
+
+            int numberOfMeals = daysChecked.Count;
             CreateMealPlan(_context, numberOfMeals);
         }
 

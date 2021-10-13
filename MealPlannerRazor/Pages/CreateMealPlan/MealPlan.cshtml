@@ -4,7 +4,7 @@
 @{
 }
 @{
-    var MealplanDays = Model.Mealplan.Zip(Model.DaysOfWeek, (m, d) => new { Recipe = m, Day = d});
+    var MealplanDays = Model.Mealplan.Zip(Model.daysChecked, (m, d) => new { Recipe = m, Day = d});
 }
 <h1>Meal Plan</h1>
 

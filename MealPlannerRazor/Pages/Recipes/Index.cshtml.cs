@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using MealPlannerRazor.Data;
 using MealPlannerRazor.Models;
 using System.Reflection;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MealPlannerRazor.Pages.Recipes
 {
@@ -21,67 +22,84 @@ namespace MealPlannerRazor.Pages.Recipes
         }
 
         public IList<RecipeModel> RecipeModel { get;set; }
-
+        [BindProperty(SupportsGet=true)]
+        public string SearchString { get; set; }
+        public SelectList Meats { get; set; }
+        [BindProperty(SupportsGet =true)]
+        public string MeatSelection { get; set; }
+        public int CountOfRecipes { get; set; }
      
         public async Task OnGetAsync()
         {
+            var recipes = from r in _context.RecipeModel
+                          orderby r.Name
+                          select r;
+            IQueryable<string> meatQuery = from m in _context.RecipeModel
+                                           orderby m.Meat
+                                           select m.Meat;
             string sortMethod;
             if (!String.IsNullOrEmpty(Request.Query["sort"]))
             {
                 // sorts the list of recipes based off the selected button on the Recipes page
                 sortMethod = Request.Query["sort"];
-
+                
                 switch (sortMethod)
                 {
                     case "name":
-                        RecipeModel = await _context.RecipeModel
-                        .OrderBy(r => r.Name)
-                        .ToListAsync();
+                         recipes = from r in _context.RecipeModel
+                                  orderby r.Name
+                                  select r;
                         break;
                     case "namebackwards":
-                        RecipeModel = await _context.RecipeModel
-                        .OrderByDescending(r => r.Name)
-                        .ToListAsync();
+                        recipes = from r in _context.RecipeModel
+                                      orderby r.Name descending
+                                      select r;
                         break;
                     case "meat":
-                        RecipeModel = await _context.RecipeModel
-                        .OrderBy(r => r.Meat)
-                        .ToListAsync();
+                        recipes = from r in _context.RecipeModel
+                                      orderby r.Meat
+                                      select r;
                         break;
                     case "meat2":
-                        RecipeModel = await _context.RecipeModel
-                        .OrderByDescending(r => r.Meat)
-                        .ToListAsync();
+                        recipes = from r in _context.RecipeModel
+                                  orderby r.Meat descending
+                                  select r;
                         break;
                     case "type":
-                        RecipeModel = await _context.RecipeModel
-                        .OrderBy(r => r.Type)
-                        .ToListAsync();
+                        recipes = from r in _context.RecipeModel
+                                  orderby r.Type 
+                                  select r;
                         break;
                     case "type2":
-                        RecipeModel = await _context.RecipeModel
-                        .OrderByDescending(r => r.Type)
-                        .ToListAsync();
+                        recipes = from r in _context.RecipeModel
+                                  orderby r.Type descending
+                                  select r;
                         break;
                     case "directions":
-                        RecipeModel = await _context.RecipeModel
-                        .OrderBy(r => r.RecipeDirections)
-                        .ToListAsync();
+                        recipes = from r in _context.RecipeModel
+                                  orderby r.RecipeDirections
+                                  select r;
                         break;
                     case "directions2":
-                        RecipeModel = await _context.RecipeModel
-                        .OrderByDescending(r => r.RecipeDirections)
-                        .ToListAsync();
+                        recipes = from r in _context.RecipeModel
+                                  orderby r.RecipeDirections descending
+                                  select r;
                         break;
                 }
             }
-            else
-            {
 
-                RecipeModel = await _context.RecipeModel
-                .OrderBy(r => r.Name)
-                .ToListAsync();
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                recipes = (IOrderedQueryable<RecipeModel>)recipes.Where(r => r.Name.Contains(SearchString));
             }
+
+            if (!string.IsNullOrEmpty(MeatSelection))
+            {
+                recipes = (IOrderedQueryable<RecipeModel>)recipes.Where(r => r.Meat == MeatSelection);
+            }
+            Meats = new SelectList(await meatQuery.Distinct().ToListAsync());
+            RecipeModel = await recipes.ToListAsync();
+            
             
         }
     }

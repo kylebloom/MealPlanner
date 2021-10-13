@@ -1,0 +1,49 @@
+﻿@page
+@model MealPlannerRazor.Pages.CreateMealPlan.MealPlanDaysModel
+@{
+}
+
+
+
+<h1>Meal Plan Days</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-page="MealPlan">
+            <div class="form-group">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="monCheck" id="monCheck" />
+                    <label class="form-check-label" for="monCheck">Monday</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="tueCheck" id="tueCheck" />
+                    <label class="form-check-label" for="tueCheck">Tuesday</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="wedCheck" id="wedCheck" />
+                    <label class="form-check-label" for="wedCheck">Wednesday</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="thuCheck" id="thuCheck" />
+                    <label class="form-check-label" for="thuCheck">Thursday</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="friCheck" id="friCheck" />
+                    <label class="form-check-label" for="friCheck">Friday</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="satCheck" id="satCheck" />
+                    <label class="form-check-label" for="satCheck">Saturday</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="sunCheck" id="sunCheck" />
+                    <label class="form-check-label" for="sunCheck">Sunday</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
