@@ -2,12 +2,15 @@
 @model MealPlannerRazor.Pages.CreateMealPlan.MealPlanModel
 @using System.Collections.Generic;
 @{
-}
-@{
-    var MealplanDays = Model.Mealplan.Zip(Model.daysForMeals, (m, d) => new { Recipe = m, Day = d});
     
+    var MealplanDays = Model.Mealplan.Zip(Model.daysForMeals, (m, d) => new { Recipe = m, Day = d});
 }
 <h1>Meal Plan</h1>
+
+<!-- Button links to .ics file which is a calendar event file, will add recipes to the calendar -->
+<a class="btn btn-primary" href="~/data/CalendarItem.ics">Add to Calendar</a>
+
+
 
 
 
