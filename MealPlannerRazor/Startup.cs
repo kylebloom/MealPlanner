@@ -47,7 +47,11 @@ namespace MealPlannerRazor
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            if (env.IsDevelopment())
+            {
+                app.UseBrowserLink();
+            }
+            
             app.UseRouting();
 
             app.UseAuthorization();

@@ -6,8 +6,12 @@
     <title>@ViewData["Title"] - Meal Planner</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Georama&display=swap" rel="stylesheet">
 </head>
-<body>
+
+<body >
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-primary border-bottom box-shadow mb-3">
             <div class="container">
@@ -35,18 +39,19 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
+    
+        <div class="container" >
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+   
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2021 - MealPlannerRazor - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            &copy; 2021 - Meal Planner
         </div>
     </footer>
-
+    
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
