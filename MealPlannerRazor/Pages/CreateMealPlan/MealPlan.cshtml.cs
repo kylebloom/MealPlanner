@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using MealPlannerRazor.Models;
@@ -93,8 +95,30 @@ namespace MealPlannerRazor.Pages.CreateMealPlan
 
         public void CreateMealPlan(Data.MealPlannerRazorContext _context, int numberOfMeals)
         {
+
+
+            // create new email client using gmail with mealplanner.kyle@gmail.com address
+            // credentials would not be kept in the code in an application like this in the real world. 
+            var client = new SmtpClient("smtp.gmail.com", 587)
+            {
+                Credentials = new NetworkCredential("mealplanner.kyle@gmail.com", "Swimming@1993NM"),
+                EnableSsl = true
+            };
+
+            // build string for subject and body of email 
+            StringBuilder subjectBuilder = new StringBuilder();
+            subjectBuilder.Append("Meal plan for " + DateTime.Now.ToString("MM/dd/yyyy"));
+            StringBuilder bodyBuilder = new StringBuilder();
+            bodyBuilder.AppendLine("Below you will find a list of each recipes' ingredients for this week's meal plan. Check to see if we have them and if not add them to Alexa shopping list.");
+            bodyBuilder.AppendLine("");
             
+            
+
+
             RecipeModel RandomRecipe = new RecipeModel();
+
+            List<IngredientModel> IngredientList = new List<IngredientModel>();
+            IngredientModel recipeIngredients = new IngredientModel();
 
             // check to make sure pasta is only being selected once per week. 
             bool pastaFound = false;
@@ -106,15 +130,19 @@ namespace MealPlannerRazor.Pages.CreateMealPlan
             DateTime currentDate = DateTime.Now;
 
             // a list of past meals had in the last 30 days to compare with randomly selected meals.
+            // get date 30 days ago 
+            var thirtyDaysAgo = currentDate.AddMonths(-1);
             PastMealsList = _context.PastMealsModel
                 .AsEnumerable()
-                .Where(x => x.Date.Subtract(currentDate).TotalDays < 30)
+                .Where(x => x.Date > thirtyDaysAgo)
                 .ToList();
 
             // start vcalendar file here 
             // each meal needs to be an event to the calendar file
             foreach(var day in daysForMeals)
             {
+                bodyBuilder.AppendLine(day.Key + " " + day.Value.ToString("MM/dd/yyyy"));
+
                 bool mealselected = false;
                 while (!mealselected)
                 {
@@ -134,6 +162,30 @@ namespace MealPlannerRazor.Pages.CreateMealPlan
 
                             //function to add meal info to calendar event file.
                             AddMealEntryToCalendarFile(day.Value, RandomRecipe.Name, RandomRecipe.RecipeDirections);
+
+                            // add ingredients to recipe email body
+                            IngredientList = _context.IngredientModel
+                                .Where(r => r.RecipeId == RandomRecipe.Id)
+                                .ToList();
+
+                            bodyBuilder.AppendLine(RandomRecipe.Name);
+                            bodyBuilder.AppendLine("");
+
+                            if (IngredientList.Count == 0)
+                            {
+                                bodyBuilder.AppendLine("No ingredients found for recipe.\n");
+                                
+                            }
+                            else
+                            {
+                                foreach (var ingredient in IngredientList)
+                                {                                 
+                                    bodyBuilder.AppendLine(ingredient.Name);
+                                }
+                            }
+                            
+                            bodyBuilder.AppendLine("\n");
+
                         }
                         else if (RandomRecipe.Type != "Pasta")
                         {
@@ -144,6 +196,25 @@ namespace MealPlannerRazor.Pages.CreateMealPlan
 
                             //function to add meal info to calendar event file.
                             AddMealEntryToCalendarFile(day.Value, RandomRecipe.Name, RandomRecipe.RecipeDirections);
+
+                            // add ingredients to recipe email body
+                            IngredientList = _context.IngredientModel
+                                .Where(r => r.RecipeId == RandomRecipe.Id)
+                                .ToList();
+
+                            bodyBuilder.AppendLine(RandomRecipe.Name);
+                            if (IngredientList.Count == 0)
+                            {
+                                bodyBuilder.Append("No ingredients found for recipe.");
+                            }
+                            else
+                            {
+                                foreach (var ingredient in IngredientList)
+                                {
+                                    bodyBuilder.AppendLine(ingredient.Name);
+                                }
+                            }
+                            bodyBuilder.AppendLine("");
                         }
                     }
                 }
@@ -154,6 +225,9 @@ namespace MealPlannerRazor.Pages.CreateMealPlan
             string calendarItem = calLink.ToString();
             System.IO.File.WriteAllText("wwwroot/data/CalendarItem.ics", calendarItem);
             this.Mealplan = mealplan;
+
+            client.Send("mealplanner.kyle@gmail.com", "kylebloom05@gmail.com", subjectBuilder.ToString(), bodyBuilder.ToString());
+            client.Send("mealplanner.kyle@gmail.com", "anna_bishop@live.com", subjectBuilder.ToString(), bodyBuilder.ToString());
         }
 
 

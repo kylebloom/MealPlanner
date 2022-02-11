@@ -14,9 +14,7 @@ namespace MealPlannerRazor.Pages.CreateMealPlan
         {
             int numberOfMeals = int.Parse(Request.Form["numberOfMeals"]);
             Days(numberOfMeals);
-            {
-                DateTime todaysDate = DateTime.Now.Date;
-            }
+            
         }
 
 

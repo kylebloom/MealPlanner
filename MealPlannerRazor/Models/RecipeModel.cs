@@ -11,15 +11,21 @@ namespace MealPlannerRazor.Models
     {
 
         public int Id { get; set; }
+
         [Column(TypeName ="varchar(50)")]
         public string Name { get; set; }
+
         [Column(TypeName = "varchar(50)")]
         public string Meat { get; set; }
+
         [Column(TypeName = "varchar(50)")]
         public string Type { get; set; }
 
         [Display(Name = "Recipe Directions")]
         [Column(TypeName = "varchar(1000)")]
         public string RecipeDirections { get; set; }
+
+        [Column(TypeName = "varchar(50)")]
+        public string Image { get; set; }
     }
 }

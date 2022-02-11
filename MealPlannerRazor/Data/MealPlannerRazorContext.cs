@@ -21,5 +21,6 @@ namespace MealPlannerRazor.Data
 
         public DbSet<MealPlannerRazor.Models.RecipeModel> RecipeModel { get; set; }
         public DbSet<MealPlannerRazor.Models.PastMealsModel> PastMealsModel { get; set; }
+        public DbSet<MealPlannerRazor.Models.IngredientModel> IngredientModel { get; set; }
     }
 }

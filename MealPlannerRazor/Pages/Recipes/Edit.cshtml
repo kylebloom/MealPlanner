@@ -5,6 +5,8 @@
     ViewData["Title"] = "Edit";
 }
 
+
+
 <h1>Edit</h1>
 
 <h4>RecipeModel</h4>
@@ -55,11 +57,80 @@
             </div>
         </form>
     </div>
+
+    <div class="col-md-8" style="text-align:left;">
+        <h3>Ingredients</h3>
+        @if (Model.IngredientList.Count == 0)
+        {
+            <p>No ingredients found.</p>
+        } else
+        {
+            
+           
+            
+            foreach (var ingredient in Model.IngredientList)
+            {
+                    
+                <div class="row">
+                    <div class="col-md-auto">
+                        <p>@ingredient.Name</p>
+                    </div>
+                    <div class="col-2">
+                        <a class="btn-close" asp-page="./DeleteIngredient" asp-route-id="@ingredient.Id"></a>
+                    </div>
+                </div>
+                   
+
+            }
+        }
+        <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newIngredient">Add Ingredient</a>
+    </div>
+
 </div>
 
 <div>
     <a asp-page="./Index">Back to List</a>
 </div>
+
+<!-- Modal -->
+<form method="post">
+<div class="modal fade" id="newIngredient" tabindex="-1" aria-labelledby="newIngredientLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newIngredientLabelLabel">Add New Ingredient</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+          <!-- FORM -->
+        <div class="row">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="IngredientModel.Name" class="control-label"></label>
+                <input asp-for="IngredientModel.Name" id="ingredientInput"class="form-control" />
+                <span asp-validation-for="IngredientModel.Name" class="text-danger"></span>
+            </div>
+        </div>
+
+        
+
+            <input type="hidden" asp-for="IngredientModel.RecipeId" value="@Model.RecipeModel.Id" />
+            <input type="hidden" name="recipeID" value="@Model.RecipeModel.Id" />
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" asp-page-handler="AddIngredient" class="btn btn-primary">Save changes</button>
+        <!-- END OF FORM -->
+        
+      </div>
+      
+    </div>
+  </div>
+</div>
+ </form>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
